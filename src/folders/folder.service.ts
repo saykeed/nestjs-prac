@@ -12,22 +12,26 @@ export class FolderService {
         private readonly foldersRepository: Repository<Folder>
     ) {}
 
-    createFolder(createFolderDto: CreateFolderDto) {
+    createFolder(userId: number, createFolderDto: CreateFolderDto) {
         return this.foldersRepository.save(
             this.foldersRepository.create({
                 name: createFolderDto.name,
-                user: { id: createFolderDto.userId}
+                user: { id: userId}
             })
         )
     }
 
-    findAll() {
-        return this.foldersRepository.find()
+    findAll(userId: number) {
+        return this.foldersRepository.find({
+            where: {
+                user: { id: userId }
+            }
+        })
     }
 
-    async getFolderById(id: number) {
+    async getFolderById(id: number, userId: number) {
         const folder = await this.foldersRepository.findOne({
-            where: { id },
+            where: { id, user: {id: userId} },
             relations: { notes: true }
         })
         if (!folder) {
@@ -36,14 +40,14 @@ export class FolderService {
         return folder
     }
 
-    async updateFolder (id: number, updateFolderDto: UpdateFolderDto) {
-        const folder = await this.getFolderById(id);
+    async updateFolder (id: number, userId: number, updateFolderDto: UpdateFolderDto) {
+        const folder = await this.getFolderById(id, userId);
         Object.assign(folder, updateFolderDto)
         return this.foldersRepository.save(folder)
     }
 
-    async deleteFolder(id: number) {
-        const folder = await this.getFolderById(id)
+    async deleteFolder(id: number, userId: number) {
+        const folder = await this.getFolderById(id, userId)
         await this.foldersRepository.remove(folder)
     }
 

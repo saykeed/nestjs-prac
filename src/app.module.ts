@@ -6,6 +6,7 @@ import { AppService } from './app.service.js';
 import { UserModule } from './users/users.module.js';
 import { FolderModule } from './folders/folder.module.js'
 import { NotesModule } from './notes/note.module.js';
+import { AuthModule } from './auth/auth.module.js';
 
 @Module({
   imports: [
@@ -27,7 +28,8 @@ import { NotesModule } from './notes/note.module.js';
     }),
     UserModule,
     FolderModule,
-    NotesModule
+    NotesModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],

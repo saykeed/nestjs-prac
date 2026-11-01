@@ -5,6 +5,4 @@ export class CreateFolderDto {
   @MinLength(3)
   name: string;
 
-  @IsInt()
-  userId: number;
 }
